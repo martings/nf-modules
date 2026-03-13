@@ -86,14 +86,28 @@ output:
           description: Log file containing R session information
           pattern: "*.log"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_rbase:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - "R --version 2>&1 | head -n1 | sed 's/^R version //;s/ .*//' | cut -d' ' -f1":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - "R --version 2>&1 | head -n1 | sed 's/^R version //;s/ .*//' | cut -d' ' -f1":
+          type: eval
+          description: The expression to obtain the version of the tool

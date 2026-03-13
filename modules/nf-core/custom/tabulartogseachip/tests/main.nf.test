@@ -29,7 +29,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.chip,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -58,7 +58,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.chip,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

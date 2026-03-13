@@ -93,16 +93,30 @@ output:
           pattern: "*_filtered_down.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_pandas:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - pandas:
+          type: string
+          description: The name of the tool
+      - "python -c 'import pandas; print(pandas.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
   - "@WackerO"
 maintainers:
   - "@pinin4fjords"
   - "@WackerO"
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - pandas:
+          type: string
+          description: The name of the tool
+      - "python -c 'import pandas; print(pandas.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool

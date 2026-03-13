@@ -14,7 +14,7 @@ process CUSTOM_CATADDITIONALFASTA {
     output:
     tuple val(meta), path("*/*.fasta") , emit: fasta
     tuple val(meta), path("*/*.gtf")   , emit: gtf
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), emit: versions_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +28,5 @@ process CUSTOM_CATADDITIONALFASTA {
     mkdir out
     touch out/${prefix}.fasta
     touch out/${prefix}.gtf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python --version | sed 's/Python //')
-    END_VERSIONS
     """
 }

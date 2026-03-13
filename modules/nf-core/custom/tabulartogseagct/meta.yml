@@ -37,14 +37,28 @@ output:
           description: GCT format version of input TSV
           pattern: "*.{gct}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_awk:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - awk:
+          type: string
+          description: The name of the tool
+      - "mawk -W version 2>&1 | head -n1 | sed 's/^mawk //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - awk:
+          type: string
+          description: The name of the tool
+      - "mawk -W version 2>&1 | head -n1 | sed 's/^mawk //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool

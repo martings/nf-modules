@@ -15,7 +15,7 @@ process CUSTOM_MATRIXFILTER {
     tuple val(meta), path("*.tests.tsv")                , emit: tests
     tuple val(meta), path("*.thresholds.tsv")           , emit: thresholds
     tuple val(meta), path("*R_sessionInfo.log")         , emit: session_info
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('r-base'), eval("R --version 2>&1 | head -n1 | sed 's/^R version //;s/ .*//' | cut -d' ' -f1"), emit: versions_rbase, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,10 +36,5 @@ process CUSTOM_MATRIXFILTER {
     touch ${prefix}.tests.tsv
     touch ${prefix}.thresholds.tsv
     touch ${prefix}.R_sessionInfo.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
-    END_VERSIONS
     """
 }
